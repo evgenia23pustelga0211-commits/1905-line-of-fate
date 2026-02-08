@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1905: Линия Судьбы</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=PT+Serif:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- ШАПКА -->
+        <header class="game-header">
+            <h1>1905: ЛИНИЯ СУДЬБЫ</h1>
+            <p class="subtitle">Текстовая игра по мотивам революции 1905-1907 годов</p>
+            <div class="player-info">
+                <div class="player-name">Имя: <span id="playerName">...</span></div>
+            </div>
+        </header>
+
+        <!-- ОСНОВНОЙ ЭКРАН -->
+        <main class="game-container">
+            <!-- ТЕКСТ ИГРЫ -->
+            <section class="game-text-panel">
+                <div class="game-art" id="gameArt">
+                    <!-- ASCII-арт -->
+                </div>
+                <div class="text-content" id="textContent">
+                    <!-- Текст игры -->
+                </div>
+            </section>
+
+            <!-- ВЫБОР ДЕЙСТВИЙ -->
+            <section class="choices-panel">
+                <h2>ВЫБОР ДЕЙСТВИЯ</h2>
+                <div class="choices-container" id="choicesContainer">
+                    <!-- Кнопки выбора -->
+                </div>
+                
+                <div class="history-box">
+                    <h3>ИСТОРИЧЕСКАЯ СПРАВКА</h3>
+                    <div class="history-text" id="historyText">
+                        Выберите действие, чтобы увидеть исторический контекст.
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ТОЛЬКО ОДНА КНОПКА - ПЕРЕЗАПУСК -->
+        <footer class="control-panel">
+            <button id="restartBtn" class="restart-btn">Начать заново</button>
+        </footer>
+    </div>
+
+    <!-- ОКНО ВВОДА ИМЕНИ -->
+    <div id="nameModal" class="modal">
+        <div class="modal-content">
+            <h2>СОЗДАНИЕ ПЕРСОНАЖА</h2>
+            <div class="modal-body">
+                <p>Вы — ребёнок мелкого петербургского чиновника, из дворян, но без состояния.</p>
+                <p>Выпускник Технологического института. Работаете мастером в турбинном цехе Путиловского завода.</p>
+                
+                <div class="input-group">
+                    <label for="nameInput">Введите имя вашего персонажа:</label>
+                    <input type="text" id="nameInput" placeholder="Например: Александр" maxlength="20">
+                </div>
+                
+                <div class="char-description">
+                    <p><strong>Ваше положение:</strong> между миром начальства и миром цеха.</p>
+                    <p><strong>Ваша цель:</strong> прожить судьбу рядового человека в горниле Первой русской революции.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="startGameBtn" class="start-btn">НАЧАТЬ ИГРУ</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
