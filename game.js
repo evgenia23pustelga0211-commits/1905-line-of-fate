@@ -117,7 +117,7 @@ const scenes = {
     name_input: {
         art: "factory",
         text: "Вы — ребёнок мелкого петербургского чиновника, из дворян, но без состояния.\nВыпускник Технологического института.\nРаботаете мастером в турбинном цехе Путиловского завода.\nЖивёте небогато, снимаете квартиру.\nВаше положение — между миром начальства и миром цеха.",
-        choices: []
+        next: "act1"
     },
     
     act1: {
@@ -312,7 +312,7 @@ const scenes = {
     final_careerist: {
         art: "factory",
         title: "ФИНАЛ: КАРЬЕРИСТ С ПЯТНОМ НА СОВЕСТИ",
-        text: "Мастера арестовывают на глазах у всего цеха.\nЕго жёну выгоняют с казённой квартиры с детьми.\nВы получаете повышение до начальника смены.\nТеперь у вас отдельный кабинет, приличный оклад.\nНо по ночам вы не спите. Каждый скрип двери, каждый детский плач — вам кажется, это его дети.\n\nПережил ли революцию: ДА.\nИтог: Материальный успех, купленный ценой души.",
+        text: "Мастера арестовывают на глазах у всего цеха.\nЕго жёну выгоняют с казённой квартиры с детьми.\nВы получаете повышение до начальника сменя.\nТеперь у вас отдельный кабинет, приличный оклад.\nНо по ночам вы не спите. Каждый скрип двери, каждый детский плач — вам кажется, это его дети.\n\nПережил ли революцию: ДА.\nИтог: Материальный успех, купленный ценой души.",
         next: "game_end"
     },
     
@@ -421,11 +421,11 @@ function showScene(sceneId) {
     
     // Заменяем имя игрока в тексте
     let sceneText = scene.text;
-    if (sceneText.includes('${gameState.playerName}')) {
+    if (sceneText && sceneText.includes('${gameState.playerName}')) {
         sceneText = sceneText.replace('${gameState.playerName}', gameState.playerName);
     }
     
-    textHTML += `<p>${sceneText.replace(/\n/g, '</p><p>')}</p>`;
+    textHTML += `<p>${sceneText ? sceneText.replace(/\n/g, '</p><p>') : ''}</p>`;
     elements.textContent.innerHTML = textHTML;
     
     // Устанавливаем историческую справку
@@ -435,10 +435,13 @@ function showScene(sceneId) {
         elements.historyText.textContent = historyNotes.act2;
     } else if (sceneId.startsWith('act3') || sceneId.startsWith('final')) {
         elements.historyText.textContent = historyNotes.act3;
+    } else if (sceneId === 'start') {
+        elements.historyText.textContent = "Историческая текстовая игра по мотивам революции 1905-1907 годов. Ваши решения определят судьбу персонажа.";
     }
     
-    // Добавляем кнопки выбора
+    // Добавляем кнопки выбора ИЛИ кнопку "Продолжить"
     if (scene.choices && scene.choices.length > 0) {
+        // Есть варианты выбора - показываем их
         scene.choices.forEach(choice => {
             const button = document.createElement('button');
             button.className = 'choice-btn';
@@ -455,8 +458,21 @@ function showScene(sceneId) {
             elements.choicesContainer.appendChild(button);
         });
     } else if (scene.next) {
-        // Автопереход через 2 секунды
-        setTimeout(() => showScene(scene.next), 2000);
+        // Нет вариантов выбора, но есть следующая сцена - добавляем кнопку "Продолжить"
+        const continueBtn = document.createElement('button');
+        continueBtn.className = 'choice-btn continue-btn';
+        continueBtn.textContent = 'ПРОДОЛЖИТЬ →';
+        continueBtn.addEventListener('click', () => {
+            if (scene.next === 'name_input') {
+                showNameModal();
+            } else {
+                showScene(scene.next);
+            }
+        });
+        elements.choicesContainer.appendChild(continueBtn);
+    } else if (sceneId === 'name_input') {
+        // Сцена ввода имени - показываем модальное окно
+        showNameModal();
     }
     
     // Прокрутка вверх
